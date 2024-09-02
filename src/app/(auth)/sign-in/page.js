@@ -35,7 +35,30 @@ const SignUp = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
+    try {
+      setIsSubmitting(true);
+      const response = await axios.post("/api/sign-in", data);
+
+      if(response.status !== 200){
+        console.error(response.data.message);
+        setIsSubmitting(false);
+        return;
+      }
+
+      toast({
+        title: "Signed In Successfully",
+        description: "You can now add products to your cart"
+      })
+
+      setIsSubmitting(false);
+
+      router.replace('/');
+
+
+    } catch (error) {
+      setIsSubmitting(false);
+      console.error(error)
+    }
   };
 
   return (
@@ -87,7 +110,7 @@ const SignUp = () => {
             </Button>
           </form>
         </Form>
-        <p className="mt-2 text-center">Don't have an account?
+        <p className="mt-2 text-center">{`Don't have an account?`}
           <Link className="ml-2 text-blue-600 hover:underline" href={'/sign-up'}>Sign Up</Link>
         </p>
       </div>
