@@ -20,11 +20,13 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
+import useUserStore from "@/hooks/useUserStore";
 
 const SignUp = () => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const { setUser } = useUserStore();
 
   const form = useForm({
     resolver: zodResolver(signInSchema),
@@ -49,7 +51,8 @@ const SignUp = () => {
         title: "Signed In Successfully",
         description: "You can now add products to your cart"
       })
-
+      
+      setUser(response.data.data);
       setIsSubmitting(false);
 
       router.replace('/');

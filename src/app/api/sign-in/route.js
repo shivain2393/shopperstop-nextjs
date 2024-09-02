@@ -32,10 +32,8 @@ export async function POST(request) {
             { expiresIn: "1h" }
         );
 
-        // Exclude the password from the user object before sending the response
         const { password: _, ...userWithoutPassword } = user._doc;
 
-        // Set the cookie and send the response
         return new Response(
             JSON.stringify({ data: userWithoutPassword }),
             {
