@@ -1,20 +1,47 @@
+import { useEffect, useState } from "react";
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { devtools, persist, createJSONStorage } from "zustand/middleware";
 
-const useUserStore = create(devtools((set) => (
-    {
-        user: null,
-        isAuthenticated: false,
-        setUser : (user) => set({
-            user,
-            isAuthenticated: true
-        }),
+const useUserStore = create(
+    devtools(
+        persist(
+            (set) => (
+                {
+                    user: null,
+                    isAuthenticated: false,
+                    setUser : (user) => set({
+                        user,
+                        isAuthenticated: true
+                    }),
+            
+                    signOut: () => set({
+                        user: null,
+                        isAuthenticated : false
+                    })
+                }
+            ), { name: "userStore" , storage: createJSONStorage(() => localStorage)}
+        )
+    )
+)
 
-        signOut: () => set({
+const useHydratedUserStore = () => {
+    const store = useUserStore();
+    const [isHydrated, setIsHydrated] = useState(false);
+
+    useEffect(() => {
+        setIsHydrated(true);
+    }, [])
+
+    if(!isHydrated){
+        return {
             user: null,
-            isAuthenticated : false
-        })
+            isAuthenticated: false,
+            setUser: () => {},
+            signOut: () => {}
+        }
     }
-), { name: "UserStore"}))
 
-export default useUserStore;
+    return store;
+}
+
+export default useHydratedUserStore;

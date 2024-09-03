@@ -2,15 +2,16 @@
 
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Button } from "@/components/ui/button";
-import useUserStore from "@/hooks/useUserStore";
+import useHydratedUserStore from "@/hooks/useUserStore";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useToast } from "./ui/use-toast";
+import { Loader2 } from "lucide-react";
 
 export default function Navbar() {
-  const { isAuthenticated, signOut } = useUserStore();
+  const { isAuthenticated, signOut } = useHydratedUserStore();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -50,7 +51,12 @@ export default function Navbar() {
               </Link>
 
               {isAuthenticated ? (
-                <Button disabled={isSubmitting} onClick={handleSignOut}>{isSubmitting ? "Signing out..." : "Sign Out"}</Button>
+                <Button disabled={isSubmitting} onClick={handleSignOut}>{isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-4 animate-spin"/>
+                    Signing Out...
+                  </>
+                ) : "Sign Out"}</Button>
               ) : (
                 <Link href={"/sign-in"}>
                   <Button>Sign In</Button>

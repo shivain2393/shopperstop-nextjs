@@ -8,7 +8,7 @@ export async function POST(request) {
 
     try {
         const { username, password } = await request.json();
-        const user = await UserModel.findOne({ username });
+        const user = await UserModel.findOne({ username }).select("-shoppingCart")
 
         if (!user) {
             return new Response(
