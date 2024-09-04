@@ -4,9 +4,11 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import useHydratedCartStore from "@/hooks/useCartStore";
+import useHydratedUserStore from "@/hooks/useUserStore";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const ProductPage = ({ params }) => {
@@ -14,6 +16,8 @@ const ProductPage = ({ params }) => {
   const { toast } = useToast();
   const { addItemToCart, removeItemFromCart, cartItems } = useHydratedCartStore();
   const [isInCart, setIsInCart] = useState(false);
+  const { isAuthenticated } = useHydratedUserStore();
+  const router = useRouter();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -41,12 +45,22 @@ const ProductPage = ({ params }) => {
   }, [product, cartItems]);
 
   const addToCart = () => {
-    addItemToCart(product);
+    if(isAuthenticated){
+      addItemToCart(product);
 
     toast({
       title: "Added to Cart",
       description: `You have added ${product.title} to your cart`,
     });
+    }
+    else{
+      toast({
+        title: "Login to add to cart",
+        description: `You need to login first`,
+        variant: "destructive",
+      })
+      router.push("/sign-in");
+    }
   };
 
   const removeFromCart = () => {
