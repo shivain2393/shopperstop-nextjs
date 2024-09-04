@@ -13,7 +13,7 @@ const Home = () => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const response = await axios.get("https://dummyjson.com/products");
+        const response = await axios.get("https://dummyjson.com/products?limit=0&sortBy=category&order=desc");
 
         const data = response.data.products;
         setProducts(data);

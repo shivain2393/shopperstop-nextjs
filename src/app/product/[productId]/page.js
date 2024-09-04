@@ -89,6 +89,7 @@ const ProductPage = ({ params }) => {
           <div className="col-span-2 p-4 flex flex-col gap-6">
             <h1 className="text-5xl sm:text-4xl font-bold">{product.title}</h1>
             <p className="text-2xl sm:text-xl">{product.description}</p>
+            <h2 className="text-2xl font-bold">{`$ ${product.price}`}</h2>
             {isInCart ? (
               <Button onClick={removeFromCart} variant="destructive" className="w-full sm:w-1/2">Remove From Cart</Button>
             ) : (
