@@ -1,10 +1,9 @@
 "use client";
 
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
+import ProductCard from "@/components/ProductCard";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const Home = () => {
@@ -27,23 +26,10 @@ const Home = () => {
 
   return (
     <MaxWidthWrapper>
-      <div className="w-full flex flex-col sm:flex-row sm:flex-wrap justify-center sm:justify-between">
+      <div className="w-full flex flex-col sm:flex-row sm:flex-wrap justify-center items-center sm:justify-between">
         {products ? (
           products.map((product) => (
-            <Link
-              href={`/product/${product.id}/`}
-              key={product.id}
-              className="mt-20 w-400 h-400 cursor-pointer border p-4 rounded-lg shadow-md"
-            >
-              <Image
-                src={product.thumbnail}
-                width={300}
-                height={300}
-                alt="product-img"
-                priority={true}
-              />
-              <h2 className="mt-2 text-center text-xl">{product.title}</h2>
-            </Link>
+            <ProductCard key={product.id} product={product}/>
           ))
         ) : (
           <div className="mt-20 flex justify-center items-center w-full">
