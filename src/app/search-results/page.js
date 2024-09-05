@@ -41,8 +41,8 @@ const SearchResults = () => {
   }, [query]);
 
   return (
-    <MaxWidthWrapper>
-      <Suspense fallback={<LoaderFallback />}>
+    <Suspense fallback={<LoaderFallback />}>
+      <MaxWidthWrapper>
         <div className="w-full flex flex-col sm:flex-row sm:flex-wrap justify-center sm:justify-evenly">
           {loading ? (
             <div className="mt-20 flex justify-center items-center w-full">
@@ -58,8 +58,8 @@ const SearchResults = () => {
             ))
           )}
         </div>
-      </Suspense>
-    </MaxWidthWrapper>
+      </MaxWidthWrapper>
+    </Suspense>
   );
 };
 
