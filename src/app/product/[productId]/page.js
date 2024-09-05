@@ -10,6 +10,14 @@ import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { Separator } from "@/components/ui/separator";
+
 
 const ProductPage = ({ params }) => {
   const [product, setProduct] = useState({});
@@ -18,6 +26,8 @@ const ProductPage = ({ params }) => {
   const [isInCart, setIsInCart] = useState(false);
   const { isAuthenticated } = useHydratedUserStore();
   const router = useRouter();
+  console.log(product);
+  
 
   useEffect(() => {
     const getProduct = async () => {
@@ -77,6 +87,7 @@ const ProductPage = ({ params }) => {
   return (
     <MaxWidthWrapper>
       {product.thumbnail ? (
+        <>
         <div className="flex flex-col justify-center gap-4 sm:grid sm:grid-cols-3 sm:mt-20">
           <div className="w-full border-b sm:border-r sm:border-b-0">
             <Image
@@ -84,7 +95,7 @@ const ProductPage = ({ params }) => {
               alt={product.title || "Product Image"}
               width={400}
               height={400}
-            />
+              />
           </div>
           <div className="col-span-2 p-4 flex flex-col gap-6">
             <h1 className="text-5xl sm:text-4xl font-bold">{product.title}</h1>
@@ -99,6 +110,26 @@ const ProductPage = ({ params }) => {
             )}
           </div>
         </div>
+        <Separator />
+        <div className="flex flex-col mt-6">
+          <h1 className="text-3xl font-bold self-center">Customer Reviews</h1>
+          <div className="flex flex-col gap-4">
+            {product.reviews.map((review, index) => (
+              <Accordion type="single" collapsible key={index}>
+                <AccordionItem value={`item-${index}`}>
+                  <AccordionTrigger>
+                    {review.comment}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <h2>Rating: <span className="font-bold">{review.rating}</span></h2>
+                    <h2>Review By : <span className="font-bold">{review.reviewerName}</span></h2>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            ))}
+          </div>
+        </div>
+            </>
       ) : (
         <div className="mt-20 flex justify-center items-center w-full">
           <Loader2 className="size-16 animate-spin" />
