@@ -63,7 +63,7 @@ const SignUp = () => {
       <h1 className="text-5xl font-bold text-blue-400 text-center mt-20">Sign Up</h1>
       <div className="mt-10 border p-4 rounded-lg mx-auto max-w-sm">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-2">
             <FormField
               control={form.control}
               name="username"

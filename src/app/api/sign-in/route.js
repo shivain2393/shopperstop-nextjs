@@ -22,7 +22,7 @@ export async function POST(request) {
         if (!isPasswordCorrect) {
             return new Response(
                 JSON.stringify({ message: "Invalid Username or Password" }),
-                { status: 404 }
+                { status: 401 }
             );
         }
 

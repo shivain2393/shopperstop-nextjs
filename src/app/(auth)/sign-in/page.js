@@ -27,6 +27,8 @@ const SignUp = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const { setUser } = useUserStore();
+  const [error, setError] = useState(null);
+
 
   const form = useForm({
     resolver: zodResolver(signInSchema),
@@ -54,13 +56,14 @@ const SignUp = () => {
       
       setUser(response.data.data);
       setIsSubmitting(false);
-
+      setError(null);  
       router.replace('/');
 
 
     } catch (error) {
       setIsSubmitting(false);
       console.error(error)
+      setError(error.response?.data?.message);
     }
   };
 
@@ -69,7 +72,7 @@ const SignUp = () => {
       <h1 className="text-5xl font-bold text-blue-400 text-center mt-20">Sign In</h1>
       <div className="mt-10 border p-4 rounded-lg mx-auto max-w-sm">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-2">
             <FormField
               control={form.control}
               name="username"
@@ -111,6 +114,7 @@ const SignUp = () => {
                 "Sign In"
               )}
             </Button>
+            {error && <p className="text-destructive font-bold self-center">{error}</p>}
           </form>
         </Form>
         <p className="mt-2 text-center">{`Don't have an account?`}
