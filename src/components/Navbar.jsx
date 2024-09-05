@@ -70,25 +70,27 @@ export default function Navbar() {
       <header className="relative bg-background">
         <MaxWidthWrapper>
           <div className="border-b border-gray-200">
-            <div className="flex h-16 justify-between items-center">
-              <Link href={"/"} className="text-xl sm:text-4xl font-bold text-blue-400">
-                ShopperStop
+            <div className="flex h-16 justify-between items-center gap-2">
+              <Link href={"/"} className="text-xl sm:text-4xl font-bold text-blue-400 mr-4">
+                <span className="text-4xl block sm:hidden">SS</span>
+                <span className="hidden sm:block">ShopperStop</span>
               </Link>
 
-              <form onSubmit={handleSearch} className="flex gap-2">
-                <SearchInput onChange={(e) => setSearchQuery(e.target.value)}/>
+              <form onSubmit={handleSearch} className="flex gap-2 max-w-sm items-center">
+                <SearchInput className="" onChange={(e) => setSearchQuery(e.target.value)}/>
                 <Button type="submit" disabled={searchQuery.trim().length === 0}>
-                  <Search />
+                  <Search className="h-3 w-3 sm:h-5 sm:w-5"/>
                 </Button>
               </form>
 
 
               {isAuthenticated ? (
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 sm:gap-4">
                   <Button
                     variant="destructive"
                     disabled={isSubmitting}
                     onClick={handleSignOut}
+                    className="text-xs p-2 sm:text-sm sm:p-4"
                   >
                     {isSubmitting ? (
                       <>
@@ -101,7 +103,7 @@ export default function Navbar() {
                   </Button>
                   <Sheet>
                     <SheetTrigger>
-                      <ShoppingCart />
+                      <ShoppingCart className="h-4 w-4 sm:h-6 sm:w-6"/>
                     </SheetTrigger>
                     <SheetContent>
                       <SheetHeader>

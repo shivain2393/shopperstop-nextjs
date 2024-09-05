@@ -26,7 +26,6 @@ const ProductPage = ({ params }) => {
   const [isInCart, setIsInCart] = useState(false);
   const { isAuthenticated } = useHydratedUserStore();
   const router = useRouter();
-  console.log(product);
   
 
   useEffect(() => {
