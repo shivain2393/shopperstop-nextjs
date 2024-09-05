@@ -5,7 +5,7 @@ import ProductCard from "@/components/ProductCard";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 
 const SearchResults = () => {
   const searchParams = useSearchParams();
@@ -42,23 +42,32 @@ const SearchResults = () => {
 
   return (
     <MaxWidthWrapper>
-      <div className="w-full flex flex-col sm:flex-row sm:flex-wrap justify-center sm:justify-evenly">
-        {loading ? (
-          <div className="mt-20 flex justify-center items-center w-full">
-            <Loader2 className="size-16 animate-spin" />
-          </div>
-        ) : searchResults.length === 0 ? (
-          <div className="mt-20 flex justify-center items-center w-full">
-            <h1 className="text-3xl font-bold">No Results Found</h1>
-          </div>
-        ) : (
-          searchResults.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))
-        )}
-      </div>
+      <Suspense fallback={<LoaderFallback />}>
+        <div className="w-full flex flex-col sm:flex-row sm:flex-wrap justify-center sm:justify-evenly">
+          {loading ? (
+            <div className="mt-20 flex justify-center items-center w-full">
+              <Loader2 className="size-16 animate-spin" />
+            </div>
+          ) : searchResults.length === 0 ? (
+            <div className="mt-20 flex justify-center items-center w-full">
+              <h1 className="text-3xl font-bold">No Results Found</h1>
+            </div>
+          ) : (
+            searchResults.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))
+          )}
+        </div>
+      </Suspense>
     </MaxWidthWrapper>
   );
 };
+
+// Fallback component for Suspense
+const LoaderFallback = () => (
+  <div className="mt-20 flex justify-center items-center w-full">
+    <Loader2 className="size-16 animate-spin" />
+  </div>
+);
 
 export default SearchResults;
