@@ -7,7 +7,7 @@ import { Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 
-const SearchResults = () => {
+const SearchResultsContent = () => {
   const searchParams = useSearchParams();
   const query = searchParams.get("query");
   const [searchResults, setSearchResults] = useState([]);
@@ -30,34 +30,48 @@ const SearchResults = () => {
         setLoading(false);
       } catch (error) {
         console.error(
-          "Error in fetching search results from DummyJSON : ",
+          "Error in fetching search results from DummyJSON: ",
           error
         );
         setLoading(false);
       }
     };
 
-    getSearchResults();
+    if (query) {
+      getSearchResults();
+    }
   }, [query]);
 
+  if (loading) {
+    return (
+      <div className="mt-20 flex justify-center items-center w-full">
+        <Loader2 className="size-16 animate-spin" />
+      </div>
+    );
+  }
+
+  if (searchResults.length === 0) {
+    return (
+      <div className="mt-20 flex justify-center items-center w-full">
+        <h1 className="text-3xl font-bold">No Results Found</h1>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full flex flex-col sm:flex-row sm:flex-wrap justify-center sm:justify-evenly">
+      {searchResults.map((product) => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
+  );
+};
+
+const SearchResults = () => {
   return (
     <Suspense fallback={<LoaderFallback />}>
       <MaxWidthWrapper>
-        <div className="w-full flex flex-col sm:flex-row sm:flex-wrap justify-center sm:justify-evenly">
-          {loading ? (
-            <div className="mt-20 flex justify-center items-center w-full">
-              <Loader2 className="size-16 animate-spin" />
-            </div>
-          ) : searchResults.length === 0 ? (
-            <div className="mt-20 flex justify-center items-center w-full">
-              <h1 className="text-3xl font-bold">No Results Found</h1>
-            </div>
-          ) : (
-            searchResults.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))
-          )}
-        </div>
+        <SearchResultsContent />
       </MaxWidthWrapper>
     </Suspense>
   );
